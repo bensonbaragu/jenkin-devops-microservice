@@ -3,7 +3,7 @@
 pipeline {
 		//agent any
 		//Using docker image as an agent
-		agent { docker { image 'node:alpine3.17'} }
+		agent { dockerContainer { image 'node:alpine3.17'} }
 		stages {
 			stage('Build'){
 				steps{
