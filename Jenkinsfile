@@ -1,13 +1,13 @@
 //Scripted syntax - Old way. 
 //Declarative is the new way. 
 pipeline {
-		//agent any
+		agent any
 		//Using docker image as an agent
-		agent { dockerContainer { image 'node:alpine3.17'} }
+		//agent { dockerContainer { image 'node:alpine3.17'} }
 		stages {
 			stage('Build'){
 				steps{
-					sh 'node --version'
+					//sh 'node --version'
 					echo "Build"
 				}
 			}
