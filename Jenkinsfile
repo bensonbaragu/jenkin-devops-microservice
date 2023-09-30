@@ -5,13 +5,13 @@ pipeline {
 		//Using docker image as an agent
 		//agent { dockerContainer { image 'node:alpine3.17'} }
 
-		environment {
-			dockerHome = tool "myDocker"
-			mavenHome = tool "myMaven"
-			PATH = "$dockerHome/bin:$mavenHome/bin:$PATH"
-		}
+		// environment {
+		// 	dockerHome = tool "myDocker"
+		// 	mavenHome = tool "myMaven"
+		// 	PATH = "$dockerHome/bin:$mavenHome/bin:$PATH"
+		// }
 		stages {
-			stage('Build'){
+			stage('Checkout'){
 				steps{
 					//sh 'node --version'
 					sh 'mvn --version'
@@ -25,14 +25,19 @@ pipeline {
 					echo "BUILD_URL - $env.BUILD_URL"
 				}
 			}
+			stage('Compline'){
+				steps{
+					sh "mvn clean compile"
+				}
+			}
 			stage('Test'){
 				steps{
-					echo "Test"
+					sh "mvn test"
 				}
 			}
 			stage('Integration Test'){
 				steps{
-					echo "Integration test"
+					sh "mvn failsafe:integration-test failsafe:verify"
 				}
 			}
 		} 
