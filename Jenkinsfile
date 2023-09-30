@@ -3,7 +3,7 @@
 pipeline {
 		//agent any
 		//Using docker image as an agent
-		agent {docker{image 'maven:3.9.4'}}
+		agent { docker {image 'maven:3.9.4'} }
 		stages {
 			stage('Build'){
 				steps{
