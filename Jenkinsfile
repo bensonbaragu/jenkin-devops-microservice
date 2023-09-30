@@ -25,21 +25,46 @@ pipeline {
 					echo "BUILD_URL - $env.BUILD_URL"
 				}
 			}
-			// stage('Compline'){
-			// 	steps{
-			// 		sh "mvn clean compile"
-			// 	}
-			// }
-			// stage('Test'){
-			// 	steps{
-			// 		sh "mvn test"
-			// 	}
-			// }
-			// stage('Integration Test'){
-			// 	steps{
-			// 		sh "mvn failsafe:integration-test failsafe:verify"
-			// 	}
-			// }
+			stage('Compline'){
+				steps{
+					sh "mvn clean compile"
+				}
+			}
+			stage('Test'){
+				steps{
+					sh "mvn test"
+				}
+			}
+			stage('Integration Test'){
+				steps{
+					sh "mvn failsafe:integration-test failsafe:verify"
+				}
+			}
+
+			stage('Package'){
+				steps{
+					sh "mvn package -DskipTests"
+				}
+			}
+
+			stage('Build Docker Image') {
+				steps{
+					//docker build -t baragu123/currency-exchange-devops:$env.BUILD_TAG
+					script {
+					    dockerImage = docker.build("baragu123/currency-exchange-devops:$env.BUILD_TAG")
+					}
+				}
+			}
+			stage('Push docker image') {
+				steps{
+					script {
+						docker.withRegistry('','dockerhub'){
+						dockerImage.push();
+						dockerImage.push('latest');
+						}
+					}
+				}
+			}
 		} 
 		post {
 			always {
