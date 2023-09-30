@@ -1,10 +1,13 @@
 //Scripted syntax - Old way. 
 //Declarative is the new way. 
 pipeline {
-		agent any
+		//agent any
+		//Using docker image as an agent
+		agent {docker{image 'maven:3.9.4'}}
 		stages {
 			stage('Build'){
 				steps{
+					sh 'mvn --version'
 					echo "Build"
 				}
 			}
